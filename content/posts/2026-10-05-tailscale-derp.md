@@ -1,7 +1,7 @@
 ---
 title: "A deep dive into Tailscale's DERP protocol"
 layout: "page.njk"
-date: "2026-10-05"
+date: "2026-10-05T00:00:00-07:00"
 permalink: "/tailscale-derp/"
 ---
 
