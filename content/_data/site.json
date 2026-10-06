@@ -1,0 +1,14 @@
+{
+  "title": "Brody Franks",
+  "url": "https://franks.id.au",
+  "navigation": [
+    {
+      "url": "/",
+      "name": "Posts"
+    },
+    {
+      "url": "https://homes.cs.washington.edu/~brof/",
+      "name": "About"
+    }
+  ]
+}

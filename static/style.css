@@ -1,0 +1,278 @@
+:root {
+  --primary-bg: white;
+  --primary-text: black;
+  --link: #0969da;
+  --color-neutral-muted: rgba(175, 184, 193, 0.2);
+  --theme-Red: #d72f20;
+  --theme-Green: #40803f;
+  --theme-Yellow: #986801;
+  --theme-Blue: #0179ad;
+  --theme-Purple: #a626a4;
+  --theme-Fg: #383a42;
+  --theme-Bg: #fafafa;
+  --theme-Comment: #71727a;
+  color-scheme: light;
+}
+:root.night {
+  --primary-bg: rgb(30, 30, 30);
+  --primary-text: rgb(236, 236, 236);
+  --link: rgb(88, 166, 255);
+  --color-neutral-muted: rgba(110, 118, 129, 0.4);
+  --theme-Red: #e1727b;
+  --theme-Green: #98c379;
+  --theme-Yellow: #e5c07b;
+  --theme-Blue: #61afef;
+  --theme-Purple: #c678dd;
+  --theme-Fg: #dcdfe4;
+  --theme-Bg: #282c34;
+  --theme-Comment: #8e95a2;
+  color-scheme: dark;
+}
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--primary-bg);
+  color: var(--primary-text);
+  font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol";
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Libertinus Sans", sans-serif;
+  font-weight: normal;
+}
+h1 {
+  font-size: 2em;
+}
+
+a {
+  color: var(--link);
+  text-decoration: underline;
+  overflow-wrap: anywhere;
+}
+.contact a:not(:hover),
+.post-list a:not(:hover) {
+  text-decoration: none;
+}
+a:focus-visible,
+#toggle-night-mode:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
+main {
+  margin: auto;
+  max-width: 50rem;
+  padding: 0.8rem;
+}
+header {
+  justify-content: space-between;
+  display: flex;
+}
+header a,
+header a:hover {
+  color: var(--primary-text);
+  text-decoration: none;
+}
+article {
+  display: flow-root;
+}
+
+pre {
+  color: var(--theme-Fg);
+  background: var(--theme-Bg);
+  overflow: auto;
+  padding: 1rem;
+  border-radius: 6px;
+  font-size: 85%;
+}
+code {
+  padding: 0.2em 0.4em;
+  margin: 0;
+  font-size: 85%;
+  white-space: break-spaces;
+  background-color: var(--color-neutral-muted);
+  border-radius: 6px;
+}
+pre code {
+  background: transparent;
+  white-space: pre;
+  padding: 0;
+  font-size: 100%;
+  word-wrap: normal;
+}
+
+/* About page: contact icons sit on the title line. */
+h1:has(+ .contact) {
+  display: inline-block;
+  margin-right: 1rem;
+}
+.contact {
+  display: inline-flex;
+  gap: 0.75rem;
+  margin: 0;
+}
+.contact svg {
+  display: block;
+  width: 1.2em;
+  height: 1.2em;
+}
+
+.year {
+  text-align: center;
+}
+.post-list {
+  list-style: none;
+  padding: 0;
+}
+.post-list li {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.post-list time {
+  font-size: 90%;
+}
+@media (max-width: 38rem) {
+  .post-list li a {
+    width: 100%;
+  }
+  h1 {
+    font-size: 1.75rem;
+  }
+}
+
+#toggle-night-mode {
+  background: none;
+  border: none;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  margin-left: 16px;
+  cursor: pointer;
+}
+#toggle-night-mode::after {
+  content: " ";
+  display: block;
+  width: 24px;
+  height: 24px;
+  background-image: url("images/moon.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.night #toggle-night-mode::after {
+  background-image: url("images/sun.svg");
+  filter: invert(100%);
+}
+@media (prefers-reduced-motion: no-preference) {
+  #toggle-night-mode {
+    transition: transform 100ms ease-in-out;
+  }
+  #toggle-night-mode:hover {
+    transform: rotateZ(30deg);
+  }
+  .night #toggle-night-mode:hover::after {
+    animation: sun-spin 750ms infinite linear;
+  }
+}
+@keyframes sun-spin {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(360deg);
+  }
+}
+
+/* Prism tokens use the existing One Half light/dark palette. */
+.token.comment,
+.token.prolog {
+  color: var(--theme-Comment);
+}
+.token.keyword,
+.token.boolean {
+  color: var(--theme-Purple);
+}
+.token.string,
+.token.char,
+.token.attr-value {
+  color: var(--theme-Green);
+}
+.token.number,
+.token.constant {
+  color: var(--theme-Yellow);
+}
+.token.function,
+.token.property {
+  color: var(--theme-Blue);
+}
+.token.class-name {
+  color: var(--theme-Yellow);
+}
+.token.variable,
+.token.tag {
+  color: var(--theme-Red);
+}
+
+/* Wide display equations scroll without widening the page. */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25em 0;
+}
+
+/* Employment, education and teaching share one column grid so they line up. */
+.profile-record {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr) 6rem;
+  gap: 2rem;
+  align-items: baseline;
+  padding: 0.75rem 0 1.5rem;
+  margin-bottom: 1rem;
+}
+.profile-details span {
+  display: block;
+}
+.profile-details span + span {
+  margin-top: 0.4rem;
+}
+.profile-dates,
+.profile-items time {
+  white-space: nowrap;
+  text-align: right;
+}
+.profile-items {
+  grid-column: 2 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  row-gap: 1.2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.profile-items li {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  align-items: baseline;
+}
+@media (max-width: 42rem) {
+  .profile-record {
+    grid-template-columns: minmax(0, 1fr) 6rem;
+    gap: 1rem;
+  }
+  .profile-details,
+  .profile-items {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+  .profile-dates {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}

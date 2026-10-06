@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }}</title>
+  <meta property="og:site_name" content="{{ site.title }}">
+  <meta property="og:title" content="{{ title or site.title }}">
+  <meta property="og:url" content="{{ ogUrl or (page.url | absolute) }}">
+  <link rel="canonical" href="{{ ogUrl or (page.url | absolute) }}">
+  {% if page | isPost %}
+  <meta property="og:type" content="article">
+  <meta property="article:published_time" content="{{ page.date | isoDate }}">
+  {% endif %}
+  <link rel="icon" href="{{ assetPrefix or '/' }}favicon.ico">
+  <link rel="alternate" type="application/atom+xml" title="{{ site.title }}" href="{{ feedUrl or '/atom.xml' }}">
+  <link rel="stylesheet" href="{{ assetPrefix or '/' }}style.css">
+  {% if 'class="katex"' in content %}
+  <link rel="stylesheet" href="{{ assetPrefix or '/' }}katex/katex.min.css">
+  {% endif %}
+  <script>document.documentElement.classList.toggle('night', (localStorage.getItem('colorScheme') ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')) === 'dark');</script>
+  <script defer src="{{ assetPrefix or '/' }}site.js"></script>
+</head>
+<body>
+  <main>
+    <header>
+      <nav>{% for item in site.navigation %}<a href="{{ item.url }}">{{ item.name }}</a>{% if not loop.last %} · {% endif %}{% endfor %}</nav>
+      <button id="toggle-night-mode" aria-label="Dark mode" aria-pressed="false"></button>
+    </header>
+    <hr>
+    {% block main %}{{ content | safe }}{% endblock %}
+  </main>
+</body>
+</html>

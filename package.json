@@ -1,0 +1,29 @@
+{
+  "name": "franks-id-au",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "eleventy",
+    "build:homepage": "eleventy --config=eleventy.homepage.config.js",
+    "homepage:dry-run": "sh scripts/deploy-homepage.sh -n",
+    "homepage:deploy": "sh scripts/deploy-homepage.sh",
+    "dev": "eleventy --serve --port=8080",
+    "test": "node --test test/*.test.js",
+    "clean": "node -e \"require('node:fs').rmSync('public', {recursive:true, force:true})\"",
+    "prebuild": "npm run clean",
+    "prebuild:homepage": "node -e \"require('node:fs').rmSync('public-homepage', {recursive:true, force:true})\"",
+    "predev": "npm run clean"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "3.1.6",
+    "@11ty/eleventy-plugin-rss": "3.1.0",
+    "@11ty/eleventy-plugin-syntaxhighlight": "5.0.2",
+    "katex": "0.19.0",
+    "markdown-it": "15.0.2",
+    "markdown-it-anchor": "10.0.0",
+    "markdown-it-texmath": "1.0.0"
+  }
+}
