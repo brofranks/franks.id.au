@@ -5,11 +5,11 @@ date: "2026-10-05"
 permalink: "/tailscale-derp/"
 ---
 
-A key component of Tailscale is its fleet of relay servers. These servers run a custom protocol called DERP (Designated Encrypted Relay for Packets), which lets nodes exchange endpoint information and fall back to a relayed connection when a direct connection is not possible. The servers route packets by WireGuard public key. A client connects, proves it owns the matching private key, and keeps the connection open. Anyone else can then reach that client through the relay by addressing packets to its public key.
+A key component of Tailscale is its fleet of relay servers. These servers run a custom protocol called DERP (Designated Encrypted Relay for Packets), which lets nodes exchange endpoint information and fall back to a relayed connection when a direct connection is not possible. The servers route packets by WireGuard public key. A client connects, proves it owns the matching private key, and keeps the connection open. Other clients can then send packets to that client through the relay by addressing them to its public key.
 
-Knowing the WireGuard public key of the recipient and the DERP region they are connected to is enough to address traffic to them through the relay. DERP servers are rate-limited in practice, and a node drops WireGuard packets from unknown peers. Tailscale's control plane distributes nodes' public keys to peers. These public keys are intended to remain encrypted on the wire.
+Knowing the WireGuard public key of the recipient and the DERP region they are connected to is enough to address traffic to them through the relay. Public DERP servers are rate-limited in practice, and a node drops WireGuard packets from unknown peers. Tailscale's control plane distributes nodes' public keys to peers. These public keys are intended to remain encrypted on the wire.
 
-Below, I'll show how little code is needed to use DERP. We'll set up bidirectional communication between two clients over DERP in about 40 lines of Python, using PyNaCl as the only third-party dependency.
+Below, I'll show how to use DERP to set up bidirectional communication between two clients. We'll do this in about 40 lines of Python, using PyNaCl as the only third-party dependency.
 
 ## Framing
 
@@ -49,7 +49,7 @@ while f.readline() not in (b"\r\n", b""):
 
 ## Handshake
 
-The client and server exchange keys. The server announces its key, and the client answers with its own key and a NaCl box, sealed to the server, containing the client's protocol version.
+The client and server exchange public keys. The server announces its key, and the client answers with its own key and a NaCl box, sealed to the server, containing the client's protocol version.
 
 ```python
 typ, body = read_frame(f)
@@ -117,7 +117,7 @@ The connections to the DERP server are encrypted with TLS, but the server still 
 
 Self-hosted DERP servers can require additional client verification, while Tailscale's public relays do not appear to require registration with its control plane. For example, [Headscale](https://headscale.net/stable/ref/derp/) uses these public relays by default. Tailscale employee Brad Fitzpatrick wrote on [Hacker News](https://news.ycombinator.com/item?id=49455652) that "it's been our CEO Avery's position for ~6.5 years now that we should run DERP servers on the internet for the public good."
 
-DERP servers are meshed within each region, allowing them to forward packets between clients connected to different servers. This lets clients reconnect to another server in the region during maintenance or an outage. Clients try servers in a supplied priority order for failover, rather than choosing them based on current load.
+Tailscale's DERP servers are meshed within each region, allowing them to forward packets between clients connected to different servers. This lets clients reconnect to another server in the region during maintenance or an outage. Clients try servers within a region in a supplied priority order for failover, rather than choosing them based on current load.
 
 ## Conclusion
 
