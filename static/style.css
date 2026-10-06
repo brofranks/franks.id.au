@@ -173,7 +173,7 @@ h1:has(+ .contact) {
   background-image: url("images/sun.svg");
   filter: invert(100%);
 }
-@media (prefers-reduced-motion: no-preference) {
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
   #toggle-night-mode {
     transition: transform 100ms ease-in-out;
   }
